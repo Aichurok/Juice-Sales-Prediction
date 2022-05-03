@@ -28,6 +28,7 @@ size and brand name. These are listed below.
 
 Our benchmark model is the MLR model including the full base set of predictors, which we estimate
 using ordinary least squares (OLS) estimation.
+
 In contrast to the first method, the second method we use results in a MLR model with only a subset
 of our base set of variables as predictors. Stepwise regression (SR), using backward selection, starts with
 the full model as in the first method. It then chooses to remove one variable at a time, which improves
@@ -40,12 +41,14 @@ coefficients toward zero. The shrinkage methods we use as our
 third and fourth method of MLR model estimation are Least Absolute Shrinkage and Selection Operator
 (LASSO) and Ridge regression. Both methods extend the least squares criterion by putting a penalty
 term λ on the size of the parameters.
+
 To find the optimal value of λR and λL, i.e. λR and λL such that the Mean Square Error (MSE) is
 minimized, we use the k-fold cross-validation resampling method. Kohavi et al. (1995) found that tenfold
 cross-validation is preferred over other resampling methods such as bootstrap and that the optimal
 number of folds is ten, even if computation power allows to use more folds. Since our training sample
 is relatively small (77 observations), we will use five-fold cross-validation as suggested by James et al.
 (2013).
+
 In order to compare prediction accuracy accross models for the same SKU, we employ the modified
 Diebold-Mariano (DM) test for small to moderate sample sizes, proposed by Harvey et al. (1997). The
 DM test compares prediction accuracy of two models and determines whether the two forecasts are
