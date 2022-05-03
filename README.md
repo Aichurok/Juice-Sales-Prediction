@@ -25,20 +25,31 @@ size and brand name. These are listed below.
 8. 64 ounces Florida’s Natural
 
 ***METHODOLOGY***
-To find the best model for sales prediction, we compare four methods of estimating a multiple linear
-regression model (MLR) as shown in Equation (1), where we use the natural logarithm of sales as the
-dependent variable. In order to measure out-of-sample prediction accuracy we have to split the data into
-a training sample and a test sample. We use the first 78 weeks (75%) as the training sample and the last
-26 as the test sample. Because of the inclusion of lagged variables we have to remove the first observation
-from the training sample. In Equation (1), Sit denotes the sales of SKU i in week t, where i = 1, ..., 8
-and t = 2, ..., 78. Furthermore, xjt for j = 1, ...,K denote the K variables we use in the model in week
-t. The number of variables K that are included in the model depends on the method used, but it will
-always be a subset of the base set of variables we present in Section 2. Lastly, εit denotes the error term
-in the model for SKU i in week t. Besides the sales, lagged sales and all price variables also enter the
-model transformed by the natural logarithm. All computations and estimations for the purpose of this
-paper are done in R software.
-\begin{equation} \label{MLR}
-    log(S_{it}) = \beta_0 + \sum_{j=1}^K x_{jt}\beta_j + \varepsilon_{it}
-\end{equation}
+
 Our benchmark model is the MLR model including the full base set of predictors, which we estimate
 using ordinary least squares (OLS) estimation.
+In contrast to the first method, the second method we use results in a MLR model with only a subset
+of our base set of variables as predictors. Stepwise regression (SR), using backward selection, starts with
+the full model as in the first method. It then chooses to remove one variable at a time, which improves
+some criteria the most until removing a variable is not desirable anymore in terms of the criteria. We
+choose to perform this subset selection method according to the Akaike information criterium (AIC) as
+AIC is most appropriate for exploratory analysis and model selection to address which model will best
+predict the next sample , which is in line with the aim of our work.
+As an alternative to the subset selection method, we use two shrinkage methods, which shrink the regression
+coefficients toward zero. The shrinkage methods we use as our
+third and fourth method of MLR model estimation are Least Absolute Shrinkage and Selection Operator
+(LASSO) and Ridge regression. Both methods extend the least squares criterion by putting a penalty
+term λ on the size of the parameters.
+To find the optimal value of λR and λL, i.e. λR and λL such that the Mean Square Error (MSE) is
+minimized, we use the k-fold cross-validation resampling method. Kohavi et al. (1995) found that tenfold
+cross-validation is preferred over other resampling methods such as bootstrap and that the optimal
+number of folds is ten, even if computation power allows to use more folds. Since our training sample
+is relatively small (77 observations), we will use five-fold cross-validation as suggested by James et al.
+(2013).
+In order to compare prediction accuracy accross models for the same SKU, we employ the modified
+Diebold-Mariano (DM) test for small to moderate sample sizes, proposed by Harvey et al. (1997). The
+DM test compares prediction accuracy of two models and determines whether the two forecasts are
+significantly different or that the difference can be due to chance (Diebold and Mariano, 1995). The null
+hypothesis of the DM test is equality of the MSE’s in the test sample. We use a 5% significance level in
+all our tests. The alternatives we use in our DM tests are either of one MSE being greater than the other
+or MSE’s being significantly different.
